@@ -28,9 +28,7 @@ void* thread() {
   while (1) {/*THREADPOOL*/
     pthread_mutex_lock(&key);
     while ((num[inst] == 0) && (inst < n)) {/*VERIFICA SE O NUMERO JA FOI ANALISADO.*/
-      pthread_mutex_unlock(&key);
       inst++;
-      pthread_mutex_lock(&key);
     }
     if (inst == n) {/*SE NAO TIVER MAIS NUMERO PARA ANALISAR, ENCERRA O THREAD.*/
       pthread_mutex_unlock(&key);
