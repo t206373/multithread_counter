@@ -23,13 +23,14 @@ int primetest (int entry) {
   return 1;
 }
 
-void* thread(void *arg) {
-  int *N = (int*)(arg);
+void* thread() {
   int inst=0;
-  pthread_mutex_lock(&key);
   while (1) {/*THREADPOOL*/
+    pthread_mutex_lock(&key);
     while ((num[inst] == 0) && (inst < n)) {/*VERIFICA SE O NUMERO JA FOI ANALISADO.*/
+      pthread_mutex_unlock(&key);
       inst++;
+      pthread_mutex_lock(&key);
     }
     if (inst == n) {/*SE NAO TIVER MAIS NUMERO PARA ANALISAR, ENCERRA O THREAD.*/
       pthread_mutex_unlock(&key);
@@ -50,6 +51,7 @@ int main() {
   do {
     scanf("%d", &entry);
     num[n] = entry;
+    prime[n] = 0;
     n++;
   }
   while((entry=getchar()) != '\n');
